@@ -196,7 +196,7 @@ public abstract class WebTestSupport extends TestCase {
   protected HtmlPage editWikiPage(/* mutable */ HtmlPage page, final String content, final String attributes, final String descriptionOfChange, final Boolean isNew) throws Exception {
 
 
-    final String pageText = page.asText();
+    final String pageText = page.asXml();
 
     PrintWriter out = new PrintWriter("webpage.html");
     out.println( pageText );
