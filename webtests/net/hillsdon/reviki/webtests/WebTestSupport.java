@@ -198,7 +198,7 @@ public abstract class WebTestSupport extends TestCase {
 
     final String pageText = page.asXml();
 
-    PrintWriter out = new PrintWriter("webpage.html");
+    PrintWriter out = new PrintWriter("/home/vagrant/webpage.html");
     out.println( pageText );
     out.close();
 
