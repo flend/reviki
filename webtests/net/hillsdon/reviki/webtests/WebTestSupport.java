@@ -16,12 +16,11 @@
 package net.hillsdon.reviki.webtests;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import junit.framework.TestCase;
 
 import org.apache.commons.httpclient.util.URIUtil;
 import org.jaxen.JaxenException;
@@ -37,6 +36,8 @@ import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.xml.XmlPage;
+
+import junit.framework.TestCase;
 
 /**
  * Superclass for writing HtmlUnit tests for the wiki.
@@ -136,7 +137,7 @@ public abstract class WebTestSupport extends TestCase {
   protected HtmlPage getWebPage(final String path) throws IOException {
     return (HtmlPage) _client.getPage(getUrl(path));
   }
-  
+
   protected XmlPage getXmlPage(final String path) throws IOException {
     return (XmlPage) _client.getPage(getUrl(path));
   }
@@ -149,7 +150,7 @@ public abstract class WebTestSupport extends TestCase {
   protected HtmlPage getWikiPage(final String name) throws IOException {
     return getWebPage("pages/test/" + URIUtil.encodeWithinPath(name));
   }
-  
+
   protected XmlPage getHistoryAtomFeed(final String name) throws IOException {
     return getXmlPage("pages/test/" + URIUtil.encodeWithinPath(name) + "?history&ctype=atom");
   }
@@ -193,6 +194,15 @@ public abstract class WebTestSupport extends TestCase {
   }
 
   protected HtmlPage editWikiPage(/* mutable */ HtmlPage page, final String content, final String attributes, final String descriptionOfChange, final Boolean isNew) throws Exception {
+
+
+    final String pageText = page.asText();
+
+    PrintWriter out = new PrintWriter("webpage.html");
+    out.println( pageText );
+    out.close();
+
+
     URL pageUrl = page.getWebResponse().getWebRequest().getUrl();
     final String newSign = isNew != null && isNew ? " - New" : "";
     if (isNew != null) {
@@ -296,7 +306,7 @@ public abstract class WebTestSupport extends TestCase {
   protected HtmlPage getWikiList() throws IOException {
     return getWebPage("list");
   }
-  
+
   protected HtmlPage clickHistoryLink(final HtmlPage page) throws IOException {
     return (HtmlPage) ((HtmlAnchor) page.getByXPath("//a[@name='history']").iterator().next()).click();
   }
